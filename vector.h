@@ -141,6 +141,7 @@ public:
 
     template <typename... Args>
     iterator Emplace(const_iterator pos, Args&&... args) {
+        assert(pos >= begin() && pos <= end());
         const size_t idx = pos - begin();
 
         if (size_ == Capacity()) {
@@ -203,10 +204,13 @@ public:
     }
     
     iterator Erase(const_iterator pos) {
+        assert(pos >= begin() && pos <= end());
         const size_t idx = pos - begin();
+
         std::move(begin() + idx + 1, end(), begin() + idx);
         std::destroy_n(begin() + size_ - 1, 1);
         --size_;
+
         return begin() + idx;
     }
 
